@@ -8,18 +8,21 @@ import numpy
 # except:
 #     print("I am unable to connect to the database")
 
-def removeDups(dbName, tableName):
+
+def removeDups(dbName='sample1', tableName='games', uniqueCol='id', user='thelampshade', host='localhost',
+    password='dbpass'):
+
     try:
-        conn = psycopg2.connect(f"dbname='{dbName}' user='thelampshade' host='localhost' password='dbpass'")
+        conn = psycopg2.connect(f"dbname='{dbName}' user='{user}' host='{host}' password='{password}'")
     except:
         print("I am unable to connect to the database")
         return False
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     try:
-        cur.execute("""delete from games
-            where game_id not in (
-                select min(game_id)
-                from games
+        cur.execute(f"""delete from {tablename}
+            where {uniqueCol} not in (
+                select min({uniqueCol})
+                from {tableName}
                 group by title, system
             );""")
     except:
@@ -38,7 +41,9 @@ def removeDups(dbName, tableName):
     conn.close()
 
 
-removeDups("sample1", "games")
+
+# dryer
+removeDups("sample1", "games", 'game_id')
 
     
 
