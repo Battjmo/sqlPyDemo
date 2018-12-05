@@ -41,7 +41,7 @@ def removeDups(dbName='sample1', tableName='games', uniqueCol='id', user='thelam
     conn.close()
 
 
-def graphConsoles(dbName='sample1', tableName='games', graphCategory='system', user='thelampshade', host='localhost',
+def barGrapher(dbName='sample1', tableName='games', graphCategory='system', user='thelampshade', host='localhost',
     password='dbpass'):
     try:
         conn = psycopg2.connect(
@@ -51,7 +51,7 @@ def graphConsoles(dbName='sample1', tableName='games', graphCategory='system', u
         return False
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     try:
-        cur.execute(f"""SELECT system, count(*)
+        cur.execute(f"""SELECT {graphCategory}, count(*)
         FROM {tableName}
         group by {graphCategory}
         ;""")
@@ -74,7 +74,7 @@ def graphConsoles(dbName='sample1', tableName='games', graphCategory='system', u
 
 # dryer
 # removeDups("sample1", "games", 'game_id')
-graphConsoles("sample1", "games", 'system')
+barGrapher("resaled_prod", "listings", "category")
 
 
     
